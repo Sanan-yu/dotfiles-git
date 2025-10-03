@@ -1,0 +1,3 @@
+#!/bin/bash
+
+hyprctl devices -j | jq -r '.keyboards[] | .active_keymap' | tail -1

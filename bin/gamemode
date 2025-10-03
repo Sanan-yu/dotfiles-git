@@ -1,0 +1,5 @@
+#!/bin/bash
+
+~/bin/toggle-anims
+powerprofilesctl set performance
+# hyprctl dispatch exec "rofi -modi games -show games -theme games-default"

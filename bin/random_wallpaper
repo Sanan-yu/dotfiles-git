@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# random-wallpaper
+# Usage: random_wallpaper [WALLPAPERS_DIR]
+# Env overrides:
+#   TRANS_FPS (default 60) -> you can set any fps(I don't see any changes, just keep it by default)
+#   TRANS_DUR (default 1) -> how many seconds will last animation
+#   TRANS_TYPE (default any) -> set any animation avaible, it uses random animation by default
+#   USE_PYWAL (default 0) -> set to 1 to run `wal -i <image>`
+#   SWWW (default "swww") -> you can add some options if you want
+# Enjoy!
+
+set -euo pipefail
+
+WALLPAPERS="${1:-$HOME/Pictures}"
+TRANS_FPS="${TRANS_FPS:-60}"
+TRANS_DUR="${TRANS_DUR:-1}"
+TRANS_TYPE=${TRANS_TYPE:-any}
+USE_PYWAL="${USE_PYWAL:-1}"
+SWWW="${SWWW:-swww}" # 
+
+# check swww
+if ! command -v "$SWWW" >/dev/null 2>&1; then
+  echo "Error: '$SWWW' not found in PATH" >&2
+  exit 2
+fi
+
+# start swww daemon if not running (safe)
+if ! "$SWWW" query >/dev/null 2>&1; then
+  "$SWWW" daemon || true
+fi
+
+# collect images
+mapfile -d '' imgs < <(find "$WALLPAPERS" -type f \
+  \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -print0)
+
+if [[ ${#imgs[@]} -eq 0 ]]; then
+  echo "No images found in: $WALLPAPERS" >&2
+  exit 1
+fi
+
+# pick a random image
+idx=$(( RANDOM % ${#imgs[@]} ))
+# mapfile with -d '' keeps trailing delimiter removed, but ensure NUL trimmed:
+img="${imgs[$idx]}"
+# some mapfile variants include trailing newline; remove NUL/newline characters
+img="${img%$'\0'}"
+img="${img%$'\n'}"
+
+# apply wallpaper with swww (transition)
+echo "Setting wallpaper: $img"
+"$SWWW" img "$img" --transition-type "$TRANS_TYPE" --transition-fps "$TRANS_FPS" --transition-duration "$TRANS_DUR"
+
+# optional: update pywal colors
+if [[ "$USE_PYWAL" == "1" ]] && command -v wal >/dev/null 2>&1; then
+  wal -i "$img" || true
+fi
+
+exit 0

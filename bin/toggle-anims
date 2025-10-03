@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CONF="$HOME/.config/hypr/hyprland/general.conf"
+
+if grep -q "enabled = yes;" "$CONF"; then
+    sed -i 's/enabled = yes;/enabled = no;/g' "$CONF"
+else
+    sed -i 's/enabled = no;/enabled = yes;/g' "$CONF"
+fi

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Переключение видимости HyprPanel
+
+# Получаем список всех окон HyprPanel
+windows=$(hyprctl clients | grep -i 'hyprpanel')
+
+# Проверяем, есть ли окно HyprPanel
+if [[ -n "$windows" ]]; then
+    # Если окно HyprPanel найдено, скрываем его
+    hyprpanel toggleWindow bar-0
+else
+    # Если окно HyprPanel не найдено, показываем его
+    hyprpanel toggleWindow bar-0
+fi

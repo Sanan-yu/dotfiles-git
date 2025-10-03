@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+# usage: update_prism <prism_dir>
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <PrismLauncher Directory>"
+    exit 1
+fi
+
+PRISM_DIR="$1"
+echo "Updating..."
+
+mkdir -p ~/.local/share/{applications,icons,metainfo,mime/packages,man,PrismLauncher,qlogging-categories6}
+
+# cp -r "$PRISM_DIR/share/applications/"* ~/.local/share/applications/
+cp -r "$PRISM_DIR/share/icons/"* ~/.local/share/icons/
+cp -r "$PRISM_DIR/share/metainfo/"* ~/.local/share/metainfo/
+cp -r "$PRISM_DIR/share/mime/packages/"* ~/.local/share/mime/packages/
+cp -r "$PRISM_DIR/share/man/"* ~/.local/share/man/
+cp -r "$PRISM_DIR/share/PrismLauncher" ~/.local/share/
+cp -r "$PRISM_DIR/share/qlogging-categories6" ~/.local/share/
+
+echo "Succesfuly updated! Enjoy:)"

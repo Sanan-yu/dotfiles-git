@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if ps -e | grep wf-recorder ; then
+    killall wf-recorder
+else
+    wf-recorder -a -f Pictures/recordings/$(date "+%H%M%S_%y%m").mkv
+fi

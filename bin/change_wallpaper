@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# change_wallpaper
+# Usage: change_wallpaper [WALLPAPERS_DIR] 
+# Env overrides:
+#   TRANS_FPS (default 60) -> you can set any fps(I don't see any changes, just keep it by default)
+#   TRANS_DUR (default 1) -> how many seconds will last animation
+#   TRANS_TYPE (default any) -> set any animation avaible, it uses random animation by default
+#   USE_PYWAL (default 0) -> set to 1 to run `wal -i <image>`
+#   SWWW (default "swww") -> you can add some options if you want
+# Enjoy!
+
+set -euo pipefail
+
+WALLPAPERS="${1:-$HOME/Pictures/}"
+CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/wall-thumbs"
+SIZE="${SIZE:-256}"              
+LINES="${LINES:-10}"            
+
+mkdir -p "$CACHE"
+
+if ! swww query >/dev/null 2>&1; then
+  swww daemon || true
+fi
+
+mapfile -d '' IMGS < <(
+  find "$WALLPAPERS" -type f \
+    \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -print0
+)
+
+if [[ ${#IMGS[@]} -eq 0 ]]; then
+  notify-send "Rofi Wallpapers" "Nothing found in $WALLPAPERS"
+  exit 0
+fi
+
+for img in "${IMGS[@]}"; do
+  hash="$(printf '%s' "$img" | md5sum | awk '{print $1}')"
+  thumb="$CACHE/$hash.png"
+  if [[ ! -f "$thumb" ]]; then
+    magick "$img" -thumbnail "${SIZE}x${SIZE}^" -gravity center -extent "${SIZE}x${SIZE}" -strip "$thumb"
+  fi
+done
+
+choice="$(
+  for img in "${IMGS[@]}"; do
+    hash="$(printf '%s' "$img" | md5sum | awk '{print $1}')"
+    thumb="$CACHE/$hash.png"
+    printf "%s\x00icon\x1f%s\n" "$(basename "$img")|$img" "$thumb"
+  done | sort -f | \
+  rofi -dmenu -i -p "Wallpapers" -show-icons \
+       -theme-str "element-icon { size: ${SIZE}; } listview { lines: ${LINES}; }"
+)"
+
+[[ -z "$choice" ]] && exit 0
+
+wall="${choice#*|}"
+
+wal -i "$wall"
+
+swww img "$wall" --transition-type any --transition-fps 60 --transition-duration 1

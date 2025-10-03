@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
+MEM=$(free -h | awk '/Mem:/ {print $3 "/" $2}')
+DISK=$(df -h / | awk 'NR==2 {print $3 "/" $2}')
+UPTIME=$(uptime -p | sed 's/up //')
+WM=$(echo $XDG_CURRENT_DESKTOP)
+KERNEL=$(uname -a | awk '{print $1 " " $3}')
+
+options="\
+  CPU: $CPU
+ RAM: $MEM
+  Disk: $DISK
+  Uptime: $UPTIME
+  WM: $WM
+   KERNEL: $KERNEL
+"
+
+chosen=$(echo -e "$options" | rofi -dmenu -p "System resources")
+
+echo "$chosen"

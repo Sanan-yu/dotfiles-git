@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if grep "kb_layout = us,ru" ~/.config/hypr/hyprland/input.conf; then
+    sed -i 's/kb_layout = us,ru/kb_layout = us,az,ru/g' ~/.config/hypr/hyprland/input.conf
+else
+    sed -i 's/kb_layout = us,az,ru/kb_layout = us,ru/g' ~/.config/hypr/hyprland/input.conf
+fi
