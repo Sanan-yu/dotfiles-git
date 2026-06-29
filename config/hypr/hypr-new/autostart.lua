@@ -1,0 +1,17 @@
+hl.on("hyprland.start", function()
+	hl.exec_cmd("awww-daemon")
+	hl.exec_cmd("awww img ~/Pictures/fog_forest_1.png --transition-type any")
+	hl.exec_cmd(
+		"QML2_IMPORT_PATH=/usr/local/usr/lib/qt6/qml LD_LIBRARY_PATH=/usr/local/usr/lib/qt6/qml/M3Shapes qs -c test"
+	)
+	hl.exec_cmd("hyprctl setcursor Elementary 25")
+	hl.exec_cmd("systemctl --user start hyprpolkitagent")
+	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+	hl.exec_cmd("vicinae server")
+	hl.exec_cmd("copyq")
+	hl.exec_cmd("sleep 30 && hypridle")
+end)
+hl.on("hyprland.shutdown", function()
+	hl.exec_cmd("qs -c test kill")
+end)
