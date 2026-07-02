@@ -15,30 +15,30 @@ hl.config({
 		layout = "dwindle",
 	},
 
-	-- decoration = {
-	-- 	rounding = 10,
-	-- 	rounding_power = 2,
-	--
-	-- 	-- Change transparency of focused and unfocused windows
-	-- 	active_opacity = 0.96,
-	-- 	inactive_opacity = 0.90,
-	--
-	-- 	shadow = {
-	-- 		enabled = true,
-	-- 		range = 15,
-	-- 		render_power = 3,
-	-- 		color = "rgba(1a1a1aee)",
-	-- 	},
-	--
-	-- 	blur = {
-	-- 		enabled = true,
-	-- 		size = 5,
-	-- 		passes = 2,
-	-- 		vibrancy = 0.1696,
-	-- 		new_optimizations = true,
-	-- 		ignore_opacity = false,
-	-- 	},
-	-- },
+	decoration = {
+		rounding = 10,
+		rounding_power = 2,
+
+		-- Change transparency of focused and unfocused windows
+		active_opacity = 0.96,
+		inactive_opacity = 0.90,
+
+		shadow = {
+			enabled = true,
+			range = 15,
+			render_power = 3,
+			color = "rgba(1a1a1aee)",
+		},
+
+		blur = {
+			enabled = true,
+			size = 5,
+			passes = 2,
+			vibrancy = 0.1696,
+			new_optimizations = true,
+			ignore_opacity = false,
+		},
+	},
 
 	animations = {
 		enabled = true,

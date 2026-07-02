@@ -51,7 +51,7 @@ end)
 -- Window Submap
 hl.define_submap("window", function()
 	hl.bind("N", hl.dsp.focus({ urgent = true, last = true }))
-	hl.bind("SHIFT + C", hl.dsp.window.kill()) -- sends SIGKILL, be careful
+	hl.bind("SHIFT + C", hl.dsp.window.kill()) -- sends SIGKILL, I use it with popups that don't close)
 	hl.bind("F", hl.dsp.window.float({ action = "toggle" }))
 	hl.bind("SHIFT + F", hl.dsp.window.fullscreen())
 	hl.bind("P", hl.dsp.window.pseudo())
@@ -106,7 +106,7 @@ hl.define_submap("system", function()
 	hl.bind("escape", hl.dsp.submap("reset"))
 end)
 
--- Passthru Submap
+-- Passthru Submap(VMs)
 hl.define_submap("passthru", function()
 	hl.bind("SUPER + Escape", hl.dsp.submap("reset"))
 end)
@@ -145,11 +145,11 @@ hl.bind(mainMod .. " + SHIFT + right", function()
 	hl.dispatch(hl.dsp.window.swap({ direction = "right" }))
 end, { repeating = true })
 hl.bind(mainMod .. " + SHIFT + up", function()
-	hl.dispatch(hl.dsp.window.move({ x = 0, y = 60, relative = true }))
+	hl.dispatch(hl.dsp.window.move({ x = 0, y = -60, relative = true }))
 	hl.dispatch(hl.dsp.window.swap({ direction = "up" }))
 end, { repeating = true })
 hl.bind(mainMod .. " + SHIFT + down", function()
-	hl.dispatch(hl.dsp.window.move({ x = -60, y = 0, relative = true }))
+	hl.dispatch(hl.dsp.window.move({ x = 0, y = 60, relative = true }))
 	hl.dispatch(hl.dsp.window.swap({ direction = "down" }))
 end, { repeating = true })
 
@@ -235,6 +235,7 @@ local function set_zoom(delta)
 		-- Some dynamic type system magic
 		if delta == "reset" then
 			hl.config({ cursor = { zoom_factor = 1 } })
+			current_zoom = 1
 			return
 		end
 		current_zoom = math.max(1.0, current_zoom + delta)

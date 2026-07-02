@@ -4,7 +4,7 @@
 
 hl.config({
 	input = {
-		kb_layout = "us,ru,", --,az", -- ,de",
+		kb_layout = "us,ru", --,az",
 		kb_variant = "",
 		kb_model = "",
 		kb_options = "grp:caps_toggle",
